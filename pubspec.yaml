@@ -1,0 +1,61 @@
+name: myportfolio
+description: "MyPortfolio - portfolio de deux etudiants (DS Dev Mobile, GLSI 3)"
+# Projet privé : ne jamais publier sur pub.dev.
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.10.8
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # Gestion d'état : ChangeNotifier + notifyListeners (simple à expliquer).
+  provider: ^6.1.5+1
+  # Persistance locale clé/valeur : on y stocke nos données en JSON.
+  shared_preferences: ^2.5.5
+  # Requêtes HTTP vers l'API REST de GitHub.
+  http: ^1.6.0
+  # Ouvrir un lien, l'application mail ou le téléphone.
+  url_launcher: ^6.3.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
+
+  assets:
+    - assets/images/
+
+  # Polices embarquées dans l'app (fonctionnent sans Internet).
+  fonts:
+    - family: Fraunces # Titres (serif éditoriale)
+      fonts:
+        - asset: assets/fonts/Fraunces-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Fraunces-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Fraunces-MediumItalic.ttf
+          weight: 500
+          style: italic
+    - family: Manrope # Texte courant
+      fonts:
+        - asset: assets/fonts/Manrope-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Manrope-Medium.ttf
+          weight: 500
+        - asset: assets/fonts/Manrope-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Manrope-Bold.ttf
+          weight: 700
+        - asset: assets/fonts/Manrope-ExtraBold.ttf
+          weight: 800
+    - family: JetBrainsMono # Petites étiquettes (années, technologies)
+      fonts:
+        - asset: assets/fonts/JetBrainsMono-Medium.ttf
+          weight: 500
