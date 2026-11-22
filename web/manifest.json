@@ -1,11 +1,11 @@
 {
-    "name": "myportfolio",
-    "short_name": "myportfolio",
+    "name": "MyPortfolio",
+    "short_name": "MyPortfolio",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "MyPortfolio - portfolio de deux etudiants (DS Dev Mobile)",
+    "background_color": "#0B1120",
+    "theme_color": "#0B1120",
+    "description": "MyPortfolio - deux parcours, une seule app (DS Dev Mobile, GLSI 3)",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

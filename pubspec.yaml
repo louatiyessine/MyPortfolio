@@ -20,6 +20,8 @@ dependencies:
   http: ^1.6.0
   # Ouvrir un lien, l'application mail ou le téléphone.
   url_launcher: ^6.3.2
+  # Icônes iOS utilisées par certains widgets du framework.
+  cupertino_icons: ^1.0.9
 
 dev_dependencies:
   flutter_test:

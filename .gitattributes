@@ -1,0 +1,9 @@
+# Fins de ligne normalisées (LF dans le dépôt) : évite les différences
+# parasites entre les PC du binôme.
+* text=auto
+
+# Fichiers binaires : jamais modifiés par Git.
+*.png binary
+*.jpg binary
+*.ttf binary
+*.jar binary
