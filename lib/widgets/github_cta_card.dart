@@ -33,7 +33,11 @@ class GithubCtaCard extends StatelessWidget {
         child: Stack(
           children: [
             Positioned.fill(
-              child: MosaicBackground(color: accent, opacity: 0.12, tileSize: 48),
+              child: MosaicBackground(
+                color: accent,
+                opacity: 0.12,
+                tileSize: 48,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(20),
@@ -42,14 +46,20 @@ class GithubCtaCard extends StatelessWidget {
                   CircleAvatar(
                     radius: 24,
                     backgroundColor: accent,
-                    child: const Icon(Icons.terminal_rounded, color: AppColors.ink),
+                    child: const Icon(
+                      Icons.terminal_rounded,
+                      color: AppColors.ink,
+                    ),
                   ),
                   const SizedBox(width: 16),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text('Mes dépôts GitHub', style: theme.textTheme.titleMedium),
+                        Text(
+                          'Mes dépôts GitHub',
+                          style: theme.textTheme.titleMedium,
+                        ),
                         const SizedBox(height: 2),
                         Text(
                           hasLogin

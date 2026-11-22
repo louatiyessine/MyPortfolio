@@ -20,8 +20,10 @@ void main() {
     expect(restored.skills.length, original.skills.length);
     expect(restored.projects.length, original.projects.length);
     expect(restored.experiences.length, original.experiences.length);
-    expect(restored.projects.first.technologies,
-        original.projects.first.technologies);
+    expect(
+      restored.projects.first.technologies,
+      original.projects.first.technologies,
+    );
     expect(restored.skills.first.category, original.skills.first.category);
   });
 

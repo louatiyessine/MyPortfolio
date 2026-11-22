@@ -80,63 +80,62 @@ class Student {
     Education? education,
     List<Skill>? skills,
     List<Project>? projects,
-  }) =>
-      Student(
-        id: id,
-        fullName: fullName ?? this.fullName,
-        title: title ?? this.title,
-        bio: bio ?? this.bio,
-        email: email ?? this.email,
-        phone: phone ?? this.phone,
-        city: city ?? this.city,
-        githubLogin: githubLogin ?? this.githubLogin,
-        linkedinUrl: linkedinUrl ?? this.linkedinUrl,
-        photoAsset: photoAsset,
-        accentIndex: accentIndex ?? this.accentIndex,
-        education: education ?? this.education,
-        experiences: experiences,
-        skills: skills ?? this.skills,
-        projects: projects ?? this.projects,
-      );
+  }) => Student(
+    id: id,
+    fullName: fullName ?? this.fullName,
+    title: title ?? this.title,
+    bio: bio ?? this.bio,
+    email: email ?? this.email,
+    phone: phone ?? this.phone,
+    city: city ?? this.city,
+    githubLogin: githubLogin ?? this.githubLogin,
+    linkedinUrl: linkedinUrl ?? this.linkedinUrl,
+    photoAsset: photoAsset,
+    accentIndex: accentIndex ?? this.accentIndex,
+    education: education ?? this.education,
+    experiences: experiences,
+    skills: skills ?? this.skills,
+    projects: projects ?? this.projects,
+  );
 
   /// Sérialise tout le portfolio, listes comprises, en Map JSON.
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'fullName': fullName,
-        'title': title,
-        'bio': bio,
-        'email': email,
-        'phone': phone,
-        'city': city,
-        'githubLogin': githubLogin,
-        'linkedinUrl': linkedinUrl,
-        'photoAsset': photoAsset,
-        'accentIndex': accentIndex,
-        'education': education.toJson(),
-        'experiences': experiences.map((e) => e.toJson()).toList(),
-        'skills': skills.map((s) => s.toJson()).toList(),
-        'projects': projects.map((p) => p.toJson()).toList(),
-      };
+    'id': id,
+    'fullName': fullName,
+    'title': title,
+    'bio': bio,
+    'email': email,
+    'phone': phone,
+    'city': city,
+    'githubLogin': githubLogin,
+    'linkedinUrl': linkedinUrl,
+    'photoAsset': photoAsset,
+    'accentIndex': accentIndex,
+    'education': education.toJson(),
+    'experiences': experiences.map((e) => e.toJson()).toList(),
+    'skills': skills.map((s) => s.toJson()).toList(),
+    'projects': projects.map((p) => p.toJson()).toList(),
+  };
 
   factory Student.fromJson(Map<String, dynamic> json) => Student(
-        id: json['id'] as String,
-        fullName: json['fullName'] as String,
-        title: json['title'] as String? ?? '',
-        bio: json['bio'] as String? ?? '',
-        email: json['email'] as String? ?? '',
-        phone: json['phone'] as String? ?? '',
-        city: json['city'] as String? ?? '',
-        githubLogin: json['githubLogin'] as String? ?? '',
-        linkedinUrl: json['linkedinUrl'] as String? ?? '',
-        photoAsset: json['photoAsset'] as String?,
-        accentIndex: json['accentIndex'] as int? ?? 0,
-        education: Education.fromJson(
-          json['education'] as Map<String, dynamic>? ?? const {},
-        ),
-        experiences: _listFrom(json['experiences'], Experience.fromJson),
-        skills: _listFrom(json['skills'], Skill.fromJson),
-        projects: _listFrom(json['projects'], Project.fromJson),
-      );
+    id: json['id'] as String,
+    fullName: json['fullName'] as String,
+    title: json['title'] as String? ?? '',
+    bio: json['bio'] as String? ?? '',
+    email: json['email'] as String? ?? '',
+    phone: json['phone'] as String? ?? '',
+    city: json['city'] as String? ?? '',
+    githubLogin: json['githubLogin'] as String? ?? '',
+    linkedinUrl: json['linkedinUrl'] as String? ?? '',
+    photoAsset: json['photoAsset'] as String?,
+    accentIndex: json['accentIndex'] as int? ?? 0,
+    education: Education.fromJson(
+      json['education'] as Map<String, dynamic>? ?? const {},
+    ),
+    experiences: _listFrom(json['experiences'], Experience.fromJson),
+    skills: _listFrom(json['skills'], Skill.fromJson),
+    projects: _listFrom(json['projects'], Project.fromJson),
+  );
 
   /// Convertit une liste JSON en liste d'objets avec la fonction [fromJson]
   /// donnée. Factorise le même code pour les expériences, compétences et
@@ -144,8 +143,7 @@ class Student {
   static List<T> _listFrom<T>(
     Object? raw,
     T Function(Map<String, dynamic>) fromJson,
-  ) =>
-      (raw as List? ?? [])
-          .map((item) => fromJson(item as Map<String, dynamic>))
-          .toList();
+  ) => (raw as List? ?? [])
+      .map((item) => fromJson(item as Map<String, dynamic>))
+      .toList();
 }

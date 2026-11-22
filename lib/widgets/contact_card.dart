@@ -33,11 +33,7 @@ class ContactCard extends StatelessWidget {
           Uri(scheme: 'tel', path: student.phone.replaceAll(' ', '')),
         ),
       ),
-      InfoTile(
-        icon: Icons.place_outlined,
-        label: 'Ville',
-        value: student.city,
-      ),
+      InfoTile(icon: Icons.place_outlined, label: 'Ville', value: student.city),
       if (student.linkedinUrl.isNotEmpty)
         InfoTile(
           icon: Icons.work_outline_rounded,

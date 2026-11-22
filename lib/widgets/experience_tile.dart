@@ -67,7 +67,10 @@ class ExperienceTile extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 6),
-                  Text(experience.description, style: theme.textTheme.bodyMedium),
+                  Text(
+                    experience.description,
+                    style: theme.textTheme.bodyMedium,
+                  ),
                 ],
               ),
             ),

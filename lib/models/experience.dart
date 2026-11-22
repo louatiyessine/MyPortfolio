@@ -14,16 +14,16 @@ class Experience {
   final String description;
 
   Map<String, dynamic> toJson() => {
-        'role': role,
-        'organization': organization,
-        'period': period,
-        'description': description,
-      };
+    'role': role,
+    'organization': organization,
+    'period': period,
+    'description': description,
+  };
 
   factory Experience.fromJson(Map<String, dynamic> json) => Experience(
-        role: json['role'] as String? ?? '',
-        organization: json['organization'] as String? ?? '',
-        period: json['period'] as String? ?? '',
-        description: json['description'] as String? ?? '',
-      );
+    role: json['role'] as String? ?? '',
+    organization: json['organization'] as String? ?? '',
+    period: json['period'] as String? ?? '',
+    description: json['description'] as String? ?? '',
+  );
 }

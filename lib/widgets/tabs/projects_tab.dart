@@ -28,7 +28,8 @@ class ProjectsTab extends StatelessWidget {
         emptyState: EmptyState(
           icon: Icons.rocket_launch_outlined,
           title: 'Aucun projet',
-          message: 'Présente ton premier projet : titre, description et '
+          message:
+              'Présente ton premier projet : titre, description et '
               'technologies.',
           actionLabel: 'Ajouter un projet',
           onAction: () => _openForm(context),
@@ -81,14 +82,16 @@ class ProjectsTab extends StatelessWidget {
     final confirmed = await showConfirmDialog(
       context,
       title: 'Supprimer ce projet ?',
-      message: '« ${project.title} » sera définitivement retiré du portfolio '
+      message:
+          '« ${project.title} » sera définitivement retiré du portfolio '
           'de ${student.firstName}.',
     );
     if (!confirmed || !context.mounted) return;
 
-    await context
-        .read<PortfolioProvider>()
-        .deleteProject(student.id, project.id);
+    await context.read<PortfolioProvider>().deleteProject(
+      student.id,
+      project.id,
+    );
     if (context.mounted) {
       showAppSnackBar(context, 'Projet « ${project.title} » supprimé');
     }

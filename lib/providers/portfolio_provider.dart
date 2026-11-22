@@ -76,21 +76,19 @@ class PortfolioProvider extends ChangeNotifier {
   // -------------------------------------------------------------------------
 
   Future<void> addSkill(String studentId, Skill skill) => _updateStudent(
-        studentId,
-        (s) => s.copyWith(skills: [...s.skills, skill]),
-      );
+    studentId,
+    (s) => s.copyWith(skills: [...s.skills, skill]),
+  );
 
   Future<void> updateSkill(String studentId, Skill skill) => _updateStudent(
-        studentId,
-        (s) => s.copyWith(skills: _replaceById(s.skills, skill, (k) => k.id)),
-      );
+    studentId,
+    (s) => s.copyWith(skills: _replaceById(s.skills, skill, (k) => k.id)),
+  );
 
   Future<void> deleteSkill(String studentId, String skillId) => _updateStudent(
-        studentId,
-        (s) => s.copyWith(
-          skills: s.skills.where((k) => k.id != skillId).toList(),
-        ),
-      );
+    studentId,
+    (s) => s.copyWith(skills: s.skills.where((k) => k.id != skillId).toList()),
+  );
 
   // -------------------------------------------------------------------------
   // CRUD : projets
@@ -98,9 +96,9 @@ class PortfolioProvider extends ChangeNotifier {
 
   /// Le nouveau projet est placé en tête de liste : le plus récent d'abord.
   Future<void> addProject(String studentId, Project project) => _updateStudent(
-        studentId,
-        (s) => s.copyWith(projects: [project, ...s.projects]),
-      );
+    studentId,
+    (s) => s.copyWith(projects: [project, ...s.projects]),
+  );
 
   Future<void> updateProject(String studentId, Project project) =>
       _updateStudent(
@@ -143,9 +141,5 @@ class PortfolioProvider extends ChangeNotifier {
     List<T> items,
     T updated,
     String Function(T item) idOf,
-  ) =>
-      [
-        for (final item in items)
-          idOf(item) == idOf(updated) ? updated : item,
-      ];
+  ) => [for (final item in items) idOf(item) == idOf(updated) ? updated : item];
 }

@@ -8,9 +8,9 @@ import '../providers/portfolio_provider.dart';
 import '../routes/app_routes.dart';
 import '../routes/item_form_args.dart';
 import '../theme/app_colors.dart';
-import '../theme/student_theme.dart';
-import '../widgets/empty_state.dart';
+import '../theme/accent_theme.dart';
 import '../widgets/profile_header.dart';
+import '../widgets/student_not_found.dart';
 import '../widgets/tabs/profile_tab.dart';
 import '../widgets/tabs/projects_tab.dart';
 import '../widgets/tabs/skills_tab.dart';
@@ -58,21 +58,14 @@ class _PortfolioScreenState extends State<PortfolioScreen>
 
   @override
   Widget build(BuildContext context) {
-    final student =
-        context.watch<PortfolioProvider>().studentById(widget.studentId);
+    final student = context.watch<PortfolioProvider>().studentById(
+      widget.studentId,
+    );
 
-    if (student == null) {
-      return const Scaffold(
-        body: EmptyState(
-          icon: Icons.person_off_outlined,
-          title: 'Portfolio introuvable',
-          message: "Cet étudiant n'existe pas ou plus.",
-        ),
-      );
-    }
+    if (student == null) return const StudentNotFound();
 
-    return StudentTheme(
-      student: student,
+    return AccentTheme(
+      accentIndex: student.accentIndex,
       child: Scaffold(
         body: NestedScrollView(
           // L'absorber mesure la partie de l'en-tête qui reste épinglée ;
@@ -145,14 +138,30 @@ class _PortfolioScreenState extends State<PortfolioScreen>
   /// Bouton flottant adapté à l'onglet actif.
   /// Un « record » Dart regroupe les trois infos dont on a besoin.
   Widget _buildFab(Student student) {
-    final (IconData icon, String label, String route, Object args) =
-        switch (_currentTab) {
-      0 => (Icons.edit_outlined, 'Modifier le profil', AppRoutes.profileForm,
-          student.id),
-      1 => (Icons.add_rounded, 'Compétence', AppRoutes.skillForm,
-          ItemFormArgs<Skill>(studentId: student.id)),
-      _ => (Icons.add_rounded, 'Projet', AppRoutes.projectForm,
-          ItemFormArgs<Project>(studentId: student.id)),
+    final (
+      IconData icon,
+      String label,
+      String route,
+      Object args,
+    ) = switch (_currentTab) {
+      0 => (
+        Icons.edit_outlined,
+        'Modifier le profil',
+        AppRoutes.profileForm,
+        student.id,
+      ),
+      1 => (
+        Icons.add_rounded,
+        'Compétence',
+        AppRoutes.skillForm,
+        ItemFormArgs<Skill>(studentId: student.id),
+      ),
+      _ => (
+        Icons.add_rounded,
+        'Projet',
+        AppRoutes.projectForm,
+        ItemFormArgs<Project>(studentId: student.id),
+      ),
     };
 
     return FloatingActionButton.extended(

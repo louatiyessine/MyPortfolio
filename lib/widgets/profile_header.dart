@@ -80,7 +80,13 @@ class ProfileHeader extends StatelessWidget {
                       children: [
                         Icon(Icons.place_outlined, size: 15, color: accent),
                         const SizedBox(width: 4),
-                        Text(student.city, style: textTheme.labelMedium),
+                        Flexible(
+                          child: Text(
+                            student.city,
+                            style: textTheme.labelMedium,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
                       ],
                     ),
                   ],

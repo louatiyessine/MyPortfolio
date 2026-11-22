@@ -60,8 +60,10 @@ void main() {
       'mohamed',
       project.copyWith(title: 'Titre modifié'),
     );
-    expect(provider.studentById('mohamed')!.projects.first.title,
-        'Titre modifié');
+    expect(
+      provider.studentById('mohamed')!.projects.first.title,
+      'Titre modifié',
+    );
 
     await provider.deleteProject('mohamed', project.id);
     final ids = provider.studentById('mohamed')!.projects.map((p) => p.id);

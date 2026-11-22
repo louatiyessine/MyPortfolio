@@ -33,35 +33,34 @@ class Project {
     int? year,
     String? link,
     bool? inProgress,
-  }) =>
-      Project(
-        id: id,
-        title: title ?? this.title,
-        description: description ?? this.description,
-        technologies: technologies ?? this.technologies,
-        year: year ?? this.year,
-        link: link ?? this.link,
-        inProgress: inProgress ?? this.inProgress,
-      );
+  }) => Project(
+    id: id,
+    title: title ?? this.title,
+    description: description ?? this.description,
+    technologies: technologies ?? this.technologies,
+    year: year ?? this.year,
+    link: link ?? this.link,
+    inProgress: inProgress ?? this.inProgress,
+  );
 
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'title': title,
-        'description': description,
-        'technologies': technologies,
-        'year': year,
-        'link': link,
-        'inProgress': inProgress,
-      };
+    'id': id,
+    'title': title,
+    'description': description,
+    'technologies': technologies,
+    'year': year,
+    'link': link,
+    'inProgress': inProgress,
+  };
 
   factory Project.fromJson(Map<String, dynamic> json) => Project(
-        id: json['id'] as String,
-        title: json['title'] as String,
-        description: json['description'] as String,
-        // Le JSON renvoie une List<dynamic> : on la convertit en List<String>.
-        technologies: List<String>.from(json['technologies'] as List? ?? []),
-        year: json['year'] as int,
-        link: json['link'] as String? ?? '',
-        inProgress: json['inProgress'] as bool? ?? false,
-      );
+    id: json['id'] as String,
+    title: json['title'] as String,
+    description: json['description'] as String,
+    // Le JSON renvoie une List<dynamic> : on la convertit en List<String>.
+    technologies: List<String>.from(json['technologies'] as List? ?? []),
+    year: json['year'] as int,
+    link: json['link'] as String? ?? '',
+    inProgress: json['inProgress'] as bool? ?? false,
+  );
 }

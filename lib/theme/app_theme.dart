@@ -70,8 +70,10 @@ class AppTheme {
         floatingLabelStyle: TextStyle(color: accent),
         hintStyle: const TextStyle(color: AppColors.mist),
         prefixIconColor: AppColors.mist,
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 16,
+        ),
         border: _inputBorder(AppColors.line),
         enabledBorder: _inputBorder(AppColors.line),
         focusedBorder: _inputBorder(accent, width: 1.6),
@@ -142,9 +144,7 @@ class AppTheme {
       dialogTheme: DialogThemeData(
         backgroundColor: AppColors.night,
         surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(28),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         titleTextStyle: _textTheme.titleLarge,
         contentTextStyle: _textTheme.bodyMedium,
       ),
@@ -164,9 +164,8 @@ class AppTheme {
               : AppColors.sand,
         ),
         trackColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? accent
-              : AppColors.night,
+          (states) =>
+              states.contains(WidgetState.selected) ? accent : AppColors.night,
         ),
       ),
     );

@@ -52,7 +52,9 @@ class HomeScreen extends StatelessWidget {
                 ),
                 const SizedBox(height: 28),
                 HomeHero(
-                  gradientColors: accents.length > 1 ? accents : [...accents, ...accents],
+                  gradientColors: accents.length > 1
+                      ? accents
+                      : [...accents, ...accents],
                 ),
                 const SizedBox(height: 40),
                 Row(
@@ -84,7 +86,8 @@ class HomeScreen extends StatelessWidget {
     final confirmed = await showConfirmDialog(
       context,
       title: 'Réinitialiser les portfolios ?',
-      message: 'Toutes les modifications seront effacées et les données '
+      message:
+          'Toutes les modifications seront effacées et les données '
           'des CV seront restaurées.',
       confirmLabel: 'Réinitialiser',
     );

@@ -32,10 +32,15 @@ class SkillChip extends StatelessWidget {
               Container(
                 width: 7,
                 height: 7,
-                decoration: BoxDecoration(color: accent, shape: BoxShape.circle),
+                decoration: BoxDecoration(
+                  color: accent,
+                  shape: BoxShape.circle,
+                ),
               ),
               const SizedBox(width: 8),
-              Text(skill.name, style: theme.textTheme.titleSmall),
+              Flexible(
+                child: Text(skill.name, style: theme.textTheme.titleSmall),
+              ),
             ],
           ),
         ),

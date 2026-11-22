@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 
+import '../models/project.dart';
+import '../models/skill.dart';
 import '../screens/home_screen.dart';
 import '../screens/portfolio_screen.dart';
+import '../screens/profile_form_screen.dart';
+import '../screens/project_form_screen.dart';
+import '../screens/skill_form_screen.dart';
+import 'item_form_args.dart';
 
 /// Toutes les routes nommées de l'application, au même endroit.
 ///
@@ -20,12 +26,22 @@ class AppRoutes {
   static const String githubRepos = '/portfolio/github';
 
   /// Table donnée à `MaterialApp(routes: ...)`.
+  /// Chaque écran reçoit ses arguments déjà typés par son constructeur.
   static Map<String, WidgetBuilder> get routes => {
-        home: (_) => const HomeScreen(),
-        portfolio: _withArgs<String>(
-          (studentId) => PortfolioScreen(studentId: studentId),
-        ),
-      };
+    home: (_) => const HomeScreen(),
+    portfolio: _withArgs<String>(
+      (studentId) => PortfolioScreen(studentId: studentId),
+    ),
+    profileForm: _withArgs<String>(
+      (studentId) => ProfileFormScreen(studentId: studentId),
+    ),
+    skillForm: _withArgs<ItemFormArgs<Skill>>(
+      (args) => SkillFormScreen(args: args),
+    ),
+    projectForm: _withArgs<ItemFormArgs<Project>>(
+      (args) => ProjectFormScreen(args: args),
+    ),
+  };
 
   /// Lit les `arguments` de la route et construit l'écran avec.
   ///

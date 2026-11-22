@@ -34,22 +34,22 @@ class Skill {
   /// Crée une copie en changeant seulement certains champs.
   /// Les objets restent immuables : on remplace au lieu de modifier.
   Skill copyWith({String? name, SkillCategory? category}) => Skill(
-        id: id,
-        name: name ?? this.name,
-        category: category ?? this.category,
-      );
+    id: id,
+    name: name ?? this.name,
+    category: category ?? this.category,
+  );
 
   /// Conversion objet Dart -> Map JSON (pour l'enregistrement).
   Map<String, dynamic> toJson() => {
-        'id': id,
-        'name': name,
-        'category': category.name,
-      };
+    'id': id,
+    'name': name,
+    'category': category.name,
+  };
 
   /// Conversion Map JSON -> objet Dart (au chargement).
   factory Skill.fromJson(Map<String, dynamic> json) => Skill(
-        id: json['id'] as String,
-        name: json['name'] as String,
-        category: SkillCategory.fromName(json['category'] as String?),
-      );
+    id: json['id'] as String,
+    name: json['name'] as String,
+    category: SkillCategory.fromName(json['category'] as String?),
+  );
 }

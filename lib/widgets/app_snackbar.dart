@@ -10,7 +10,9 @@ void showAppSnackBar(
   String message, {
   bool isError = false,
 }) {
-  final icon = isError ? Icons.error_outline_rounded : Icons.check_circle_rounded;
+  final icon = isError
+      ? Icons.error_outline_rounded
+      : Icons.check_circle_rounded;
   ScaffoldMessenger.of(context)
     ..hideCurrentSnackBar()
     ..showSnackBar(

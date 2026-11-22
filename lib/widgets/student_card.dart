@@ -94,14 +94,17 @@ class _OpenRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Text(
-          'Explorer le portfolio de $firstName',
-          style: Theme.of(context)
-              .textTheme
-              .titleSmall
-              ?.copyWith(color: accent),
+        // Expanded : le texte passe à la ligne au lieu de déborder sur
+        // un petit écran ou avec une grande taille de police.
+        Expanded(
+          child: Text(
+            'Explorer le portfolio de $firstName',
+            style: Theme.of(
+              context,
+            ).textTheme.titleSmall?.copyWith(color: accent),
+          ),
         ),
-        const Spacer(),
+        const SizedBox(width: 12),
         CircleAvatar(
           radius: 20,
           backgroundColor: accent,

@@ -8,11 +8,11 @@ import '../models/skill.dart';
 /// [SkillCategory] sans mettre de code d'interface dans le modèle.
 extension SkillCategoryIcon on SkillCategory {
   IconData get icon => switch (this) {
-        SkillCategory.languages => Icons.code_rounded,
-        SkillCategory.web => Icons.language_rounded,
-        SkillCategory.mobileDesktop => Icons.devices_rounded,
-        SkillCategory.data => Icons.storage_rounded,
-        SkillCategory.automation => Icons.auto_awesome_rounded,
-        SkillCategory.tools => Icons.handyman_rounded,
-      };
+    SkillCategory.languages => Icons.code_rounded,
+    SkillCategory.web => Icons.language_rounded,
+    SkillCategory.mobileDesktop => Icons.devices_rounded,
+    SkillCategory.data => Icons.storage_rounded,
+    SkillCategory.automation => Icons.auto_awesome_rounded,
+    SkillCategory.tools => Icons.handyman_rounded,
+  };
 }

@@ -59,7 +59,8 @@ class _MosaicPainter extends CustomPainter {
         ..color = color.withValues(alpha: opacity * fade)
         ..style = PaintingStyle.stroke
         ..strokeWidth = 1;
-      final dot = Paint()..color = color.withValues(alpha: opacity * fade * 1.6);
+      final dot = Paint()
+        ..color = color.withValues(alpha: opacity * fade * 1.6);
 
       for (var col = 0; col < cols; col++) {
         final center = Offset(col * tileSize, y);
@@ -82,8 +83,8 @@ class _MosaicPainter extends CustomPainter {
     for (var i = 0; i < 16; i++) {
       final angle = i * math.pi / 8; // pas de 22,5°
       final radius = i.isEven ? r : r * innerRatio;
-      final point = center +
-          Offset(math.cos(angle) * radius, math.sin(angle) * radius);
+      final point =
+          center + Offset(math.cos(angle) * radius, math.sin(angle) * radius);
       if (i == 0) {
         path.moveTo(point.dx, point.dy);
       } else {

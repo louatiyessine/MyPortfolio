@@ -63,7 +63,10 @@ class SkillsTab extends StatelessWidget {
           SectionTitle(
             entry.key.label,
             icon: entry.key.icon,
-            trailing: Text('${entry.value.length}', style: textTheme.labelMedium),
+            trailing: Text(
+              '${entry.value.length}',
+              style: textTheme.labelMedium,
+            ),
           ),
           const SizedBox(height: 14),
           Wrap(
@@ -71,7 +74,10 @@ class SkillsTab extends StatelessWidget {
             runSpacing: 8,
             children: [
               for (final skill in entry.value)
-                SkillChip(skill: skill, onTap: () => _showActions(context, skill)),
+                SkillChip(
+                  skill: skill,
+                  onTap: () => _showActions(context, skill),
+                ),
             ],
           ),
         ],
@@ -109,7 +115,8 @@ class SkillsTab extends StatelessWidget {
     final confirmed = await showConfirmDialog(
       context,
       title: 'Supprimer cette compétence ?',
-      message: '« ${skill.name} » sera retirée du portfolio de '
+      message:
+          '« ${skill.name} » sera retirée du portfolio de '
           '${student.firstName}.',
     );
     if (!confirmed || !context.mounted) return;
