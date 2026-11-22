@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/project.dart';
 import '../models/skill.dart';
+import '../screens/github_repos_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/portfolio_screen.dart';
 import '../screens/profile_form_screen.dart';
@@ -40,6 +41,9 @@ class AppRoutes {
     ),
     projectForm: _withArgs<ItemFormArgs<Project>>(
       (args) => ProjectFormScreen(args: args),
+    ),
+    githubRepos: _withArgs<String>(
+      (studentId) => GithubReposScreen(studentId: studentId),
     ),
   };
 
