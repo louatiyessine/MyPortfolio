@@ -33,6 +33,8 @@ flutter:
 
   assets:
     - assets/images/
+    # Données de départ des portfolios (lues par StorageService).
+    - assets/data/
 
   # Polices embarquées dans l'app (fonctionnent sans Internet).
   fonts:

@@ -43,7 +43,7 @@ flutter test      # tests unitaires et tests de widgets
 | CRUD (3) | Ajout / modification / suppression des compétences et des projets, modification du profil, validation, confirmation, SnackBar | `screens/*_form_screen.dart`, `providers/portfolio_provider.dart` |
 | Persistance (2) | Tout est sauvegardé en JSON dans `shared_preferences` et rechargé au démarrage | `services/storage_service.dart` |
 | API REST (2) | Dépôts GitHub en direct : chargement, erreur + Réessayer, données | `services/github_api_service.dart`, `screens/github_repos_screen.dart` |
-| Qualité du code (2) | Interface `Portfolio` (aucun code répété entre les deux étudiants), un fichier = une responsabilité, widgets réutilisables, tests, 0 warning | `portfolios/`, tout `lib/`, `test/` |
+| Qualité du code (2) | Un seul template pour les deux étudiants, leurs données dans un fichier JSON (aucun code répété), widgets réutilisables, tests, 0 warning | `screens/portfolio_screen.dart`, `assets/data/portfolios.json`, `test/` |
 
 ## 3. Scénario de démonstration (5 minutes)
 
@@ -56,16 +56,16 @@ flutter test      # tests unitaires et tests de widgets
 7. **Persistance** : fermer complètement l'application puis la relancer : les modifications sont toujours là.
 8. **Indépendance** : ouvrir l'autre portfolio : il n'a pas été touché.
 9. **API REST** : onglet Profil → carte « Mes dépôts GitHub » (ou icône terminal en haut à droite) → dépôts GitHub chargés en direct. Activer le **mode avion** puis « Actualiser » → message d'erreur clair → désactiver le mode avion → « Réessayer ».
-10. **Démo propre** : le menu « ⋮ » de l'accueil remet les données des CV (Réinitialiser).
+10. **Démo propre** : le menu « ⋮ » de l'accueil remet les données du fichier JSON (Réinitialiser).
 
 ## 4. Architecture
 
 ```text
+assets/data/portfolios.json  Les DONNÉES de Yessine et de Mohamed (aucune donnée dans le code Dart)
 lib/
   main.dart                 Point d'entrée : Provider au-dessus de MaterialApp
-  portfolios/               L'INTERFACE Portfolio + une classe par étudiant (données des CV)
   models/                   Student, Education, Experience, Skill, Project, GithubRepo
-  services/                 StorageService (persistance), GithubApiService (HTTP)
+  services/                 StorageService (lit le JSON de départ + sauvegarde), GithubApiService (HTTP)
   providers/                PortfolioProvider : état + CRUD + notifyListeners()
   routes/                   AppRoutes (routes nommées), ItemFormArgs (arguments)
   screens/                  Pages complètes : accueil, portfolio, 3 formulaires, GitHub
@@ -75,22 +75,24 @@ lib/
 test/                       Tests des modèles, du provider, des validators, de l'API et du CRUD
 ```
 
-### L'interface `Portfolio` : zéro code répété entre les deux étudiants
+### Un seul template, les données de chaque étudiant : zéro code répété
+
+Le code (l'interface) est écrit une seule fois. Les données de Yessine et de Mohamed sont à part,
+dans un fichier JSON. Le template va chercher les données de l'étudiant choisi et les affiche.
 
 ```text
-abstract class Portfolio            (portfolios/portfolio.dart)
-  ├─ getters abstraits : id, fullName, bio, education, skills, projects...  -> CE QUE chaque étudiant fournit
-  └─ toStudent()       : code commun, écrit UNE fois                         -> hérité par tous
-        ▲                          ▲
-YessinePortfolio            ChaabouniPortfolio          (uniquement des données, aucun code d'affichage)
-
-allPortfolios = [YessinePortfolio(), ChaabouniPortfolio()]     (portfolios/all_portfolios.dart)
-        │  toStudent()
+assets/data/portfolios.json        [ { "id": "yessine", ... }, { "id": "mohamed", ... } ]   <- DONNÉES
+        │  StorageService.loadInitialStudents() : rootBundle + jsonDecode + Student.fromJson
         ▼
-PortfolioProvider -> PortfolioScreen, onglets, formulaires : UN seul code pour les deux étudiants
+PortfolioProvider                  List<Student> (les deux étudiants)
+        │  studentById(id)
+        ▼
+PortfolioScreen(studentId)         LE TEMPLATE : même écran, mêmes onglets, mêmes formulaires   <- CODE
+   ├─ studentId: 'yessine'  ->  portfolio de Yessine
+   └─ studentId: 'mohamed'  ->  portfolio de Mohamed
 ```
 
-Ajouter un 3e étudiant = écrire une classe `extends Portfolio` et l'ajouter à `allPortfolios`. Aucun écran à modifier.
+Ajouter un 3e étudiant = ajouter un objet dans `portfolios.json`. Aucune ligne de Dart à écrire.
 
 ### Où est l'API REST ?
 
@@ -120,7 +122,8 @@ Formulaire         ->  SnackBar + Navigator.pop()           (retour au portfolio
 ```
 
 Au redémarrage : `PortfolioProvider.load()` → `StorageService.loadStudents()` → `jsonDecode` + `fromJson`.
-Si le stockage est vide (premier lancement), les données des CV (`allPortfolios` → `toStudent()`) sont enregistrées.
+Si le stockage est vide (premier lancement), les données de `assets/data/portfolios.json` sont lues puis enregistrées
+(même format JSON, même `Student.fromJson`).
 
 ## 5. Choix techniques
 
@@ -155,8 +158,8 @@ Contrastes vérifiés (WCAG AA) : le texte le plus discret (`#8C95AB`) atteint 6
 
 - **StatelessWidget ou StatefulWidget ?** `PortfolioScreen` est Stateful (onglet actif, `TabController`) ; `ProjectCard` est Stateless (affiche ce qu'on lui donne).
 - **Pourquoi `context.watch` et `context.read` ?** `watch` dans `build` pour se reconstruire quand les données changent ; `read` dans les actions (boutons) pour appeler une méthode sans s'abonner.
-- **Comment évitez-vous de répéter le code pour les deux portfolios ?** Avec l'interface `Portfolio` (classe abstraite) : elle impose les mêmes informations à chaque étudiant et contient le code commun (`toStudent`). `YessinePortfolio` et `ChaabouniPortfolio` ne contiennent que des données. Tous les écrans reçoivent un `Student` et ne savent pas de quel étudiant il s'agit.
-- **Interface ou classe abstraite ?** En Dart, toute classe peut servir d'interface. On utilise `abstract class` car elle déclare le contrat (getters sans corps) ET partage du code (`toStudent`), ce qu'une interface pure ne fait pas.
+- **Comment évitez-vous de répéter le code pour les deux portfolios ?** Un seul template (`PortfolioScreen`) pour les deux. Il reçoit l'id de l'étudiant (`'yessine'` ou `'mohamed'`) et va chercher ses données. Les données sont dans `assets/data/portfolios.json`, pas dans le code : il n'existe aucun fichier « Yessine » ni « Mohamed » en Dart.
+- **Comment les données arrivent dans l'app ?** `rootBundle.loadString` lit le fichier JSON, `jsonDecode` le transforme en `List`, puis `Student.fromJson` crée un objet par étudiant (même principe que la réponse JSON de l'API dans l'Atelier 7).
 - **Pourquoi le `Future` de l'API n'est pas créé dans `build` ?** Sinon chaque reconstruction relancerait la requête (comme dans l'Atelier 7). Il est créé dans `initState` et recréé par « Réessayer ».
 - **Pourquoi `setState(() { ... })` avec des accolades dans `_reload` ?** Avec `=>`, la fonction renverrait le `Future` affecté, ce que Flutter interdit.
 - **Comment les deux portfolios restent indépendants ?** Chaque `Student` possède ses listes ; chaque méthode CRUD reçoit un `studentId` et ne modifie que cet étudiant.

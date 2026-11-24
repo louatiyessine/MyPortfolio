@@ -101,7 +101,7 @@ void main() {
   testWidgets('Écran GitHub : erreur, Réessayer, puis données', (tester) async {
     SharedPreferences.setMockInitialValues({});
     final provider = PortfolioProvider(StorageService());
-    await provider.load();
+    await tester.runAsync(provider.load); // lecture réelle du fichier JSON
 
     // 1er appel : pas de réseau. 2e appel : succès.
     var calls = 0;
@@ -141,7 +141,7 @@ void main() {
   ) async {
     SharedPreferences.setMockInitialValues({});
     final provider = PortfolioProvider(StorageService());
-    await provider.load();
+    await tester.runAsync(provider.load); // lecture réelle du fichier JSON
     await provider.updateProfile(
       provider.studentById('mohamed')!.copyWith(githubLogin: ''),
     );

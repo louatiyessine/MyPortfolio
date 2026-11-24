@@ -16,9 +16,14 @@ void main() {
     tester.view.devicePixelRatio = 2.625;
     addTearDown(tester.view.reset);
 
+    // runAsync : la lecture du fichier JSON est une vraie lecture disque,
+    // que l'horloge simulée des tests de widgets ne ferait pas avancer.
+    final provider = PortfolioProvider(StorageService());
+    await tester.runAsync(provider.load);
+
     await tester.pumpWidget(
-      ChangeNotifierProvider(
-        create: (_) => PortfolioProvider(StorageService())..load(),
+      ChangeNotifierProvider.value(
+        value: provider,
         child: const MyPortfolioApp(),
       ),
     );

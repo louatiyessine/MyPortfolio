@@ -7,6 +7,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 /// Teste le CRUD et la persistance sans lancer l'interface.
 void main() {
+  // Nécessaire pour lire assets/data/portfolios.json (rootBundle).
+  TestWidgetsFlutterBinding.ensureInitialized();
+
   // Chaque test démarre avec un stockage vide (simulé en mémoire).
   setUp(() => SharedPreferences.setMockInitialValues({}));
 

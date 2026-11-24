@@ -15,8 +15,15 @@ import '../widgets/tabs/profile_tab.dart';
 import '../widgets/tabs/projects_tab.dart';
 import '../widgets/tabs/skills_tab.dart';
 
-/// Portfolio d'UN étudiant, organisé en trois onglets :
-/// Profil, Compétences et Projets.
+/// LE TEMPLATE du portfolio : un seul écran pour tous les étudiants.
+///
+/// Il ne contient aucune donnée : il reçoit un [studentId] ('yessine' ou
+/// 'mohamed'), va chercher les données de cet étudiant dans le provider
+/// (qui vient du fichier `assets/data/portfolios.json`) et les affiche en
+/// trois onglets : Profil, Compétences et Projets.
+///
+///   Accueil -> PortfolioScreen(studentId: 'yessine') -> données de Yessine
+///   Accueil -> PortfolioScreen(studentId: 'mohamed') -> données de Mohamed
 ///
 /// StatefulWidget car il garde un état local : l'onglet actif, qui
 /// détermine le bouton flottant affiché (modifier le profil, ajouter une

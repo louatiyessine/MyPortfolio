@@ -1,0 +1,246 @@
+[
+  {
+    "id": "yessine",
+    "fullName": "Mouhamed Yessine Louati",
+    "title": "Développeur Full Stack",
+    "bio": "Étudiant en 3e année de licence en informatique à l'IIT Sfax, en cours de PFE. Je conçois des applications web (PHP, JavaScript, Angular), desktop (JavaFX) et .NET. Stage d’été 2026 chez Mobelite Labs : agents IA et automatisations n8n. Trésorier IEEE Computer Society, habitué à piloter des projets et des événements techniques.",
+    "email": "louatiyessine70@gmail.com",
+    "phone": "+216 58 636 767",
+    "city": "Sfax, Tunisie",
+    "githubLogin": "louatiyessine",
+    "linkedinUrl": "https://www.linkedin.com/in/yessine-louati-047254330/",
+    "photoAsset": "assets/images/yessine.jpg",
+    "accentIndex": 0,
+    "education": {
+      "establishment": "North American Private University (IIT Sfax)",
+      "program": "Licence en informatique — 3e année, projet de fin d'études",
+      "diploma": "Technicien Supérieur en Informatique",
+      "period": "2024 – 2027 (prévu)"
+    },
+    "experiences": [
+      {
+        "role": "Stagiaire Agents IA & Automatisation",
+        "organization": "Mobelite Labs",
+        "period": "20 juin – 31 juil. 2026",
+        "description": "Application web multi-agents Flask : Gemini 2.5 Flash avec RAG (ChromaDB), Llama 3.2 local (Ollama) et agent Jira via l'API REST Atlassian. Résolution de tickets via MCP, workflows n8n et agent ReAct avec LangGraph."
+      },
+      {
+        "role": "Président de l'événement CodeCore",
+        "organization": "IEEE Computer Society SBC",
+        "period": "2025",
+        "description": "Organisation complète d'un événement de programmation compétitive (concours + bootcamp) et gestion d'une équipe pluridisciplinaire."
+      },
+      {
+        "role": "Trésorier",
+        "organization": "IEEE Computer Society SBC",
+        "period": "2024 – aujourd’hui",
+        "description": "Finances du club, recherche de sponsors, budgets et rapports financiers ; responsable financier de CrackCode 1.0 et d'ATIC."
+      },
+      {
+        "role": "CASS Challenge — 4e sur 53 équipes",
+        "organization": "IEEE TSYP 2025",
+        "period": "2025",
+        "description": "Couche d'intégration IoT d'un prototype de récupération de l'énergie des vagues : interface matériel-logiciel et supervision en temps réel."
+      }
+    ],
+    "skills": [
+      {"id": "y-s0", "name": "C", "category": "languages"},
+      {"id": "y-s1", "name": "C#", "category": "languages"},
+      {"id": "y-s2", "name": "Python", "category": "languages"},
+      {"id": "y-s3", "name": "Java", "category": "languages"},
+      {"id": "y-s4", "name": "JavaScript", "category": "languages"},
+      {"id": "y-s5", "name": "TypeScript", "category": "languages"},
+      {"id": "y-s6", "name": "Dart", "category": "languages"},
+      {"id": "y-s7", "name": "HTML / CSS", "category": "web"},
+      {"id": "y-s8", "name": "React", "category": "web"},
+      {"id": "y-s9", "name": "Angular", "category": "web"},
+      {"id": "y-s10", "name": "PHP", "category": "web"},
+      {"id": "y-s11", "name": "ASP.NET MVC", "category": "web"},
+      {"id": "y-s12", "name": "Spring Boot", "category": "web"},
+      {"id": "y-s13", "name": "Flask", "category": "web"},
+      {"id": "y-s14", "name": "Flutter", "category": "mobileDesktop"},
+      {"id": "y-s15", "name": "JavaFX", "category": "mobileDesktop"},
+      {"id": "y-s16", "name": "MySQL", "category": "data"},
+      {"id": "y-s17", "name": "Oracle XE", "category": "data"},
+      {"id": "y-s18", "name": "Entity Framework", "category": "data"},
+      {"id": "y-s19", "name": "ADO.NET", "category": "data"},
+      {"id": "y-s20", "name": "ChromaDB", "category": "data"},
+      {"id": "y-s21", "name": "Big Data", "category": "data"},
+      {"id": "y-s22", "name": "n8n", "category": "automation"},
+      {"id": "y-s23", "name": "LangChain", "category": "automation"},
+      {"id": "y-s24", "name": "LangGraph", "category": "automation"},
+      {"id": "y-s25", "name": "RAG", "category": "automation"},
+      {"id": "y-s26", "name": "MCP", "category": "automation"},
+      {"id": "y-s27", "name": "Ollama", "category": "automation"},
+      {"id": "y-s28", "name": "Gemini", "category": "automation"},
+      {"id": "y-s29", "name": "Git", "category": "tools"},
+      {"id": "y-s30", "name": "GitHub", "category": "tools"},
+      {"id": "y-s31", "name": "Jira", "category": "tools"},
+      {"id": "y-s32", "name": "VS Code", "category": "tools"},
+      {"id": "y-s33", "name": "Visual Studio", "category": "tools"},
+      {"id": "y-s34", "name": "UML", "category": "tools"}
+    ],
+    "projects": [
+      {
+        "id": "y-p0",
+        "title": "Espace d'agents IA",
+        "description": "Application Flask réunissant trois agents (Gemini + RAG, Llama local, Jira) avec quatre modes de chat, dont la comparaison des modèles (tokens, coût) et la résolution de tickets via MCP. Projet de stage.",
+        "technologies": ["Python", "Flask", "LangChain", "Ollama", "ChromaDB", "MCP", "n8n", "Angular"],
+        "year": 2026,
+        "link": "https://github.com/louatiyessine/ai-agents_jira",
+        "inProgress": false
+      },
+      {
+        "id": "y-p1",
+        "title": "UniClubs",
+        "description": "Plateforme full stack de gestion des clubs universitaires : connexion e-mail et Google OAuth, rôles étudiant/admin, clubs et événements, notifications AJAX.",
+        "technologies": ["PHP 8.2", "MySQL", "Bootstrap 5", "JavaScript"],
+        "year": 2025,
+        "link": "",
+        "inProgress": false
+      },
+      {
+        "id": "y-p2",
+        "title": "Système de gestion scolaire",
+        "description": "Application desktop JavaFX en équipe Scrum de 4 sur Oracle XE (JDBC). Ma part : connexion, navigation, module de notes et bulletins (moyennes pondérées, classements).",
+        "technologies": ["Java", "JavaFX", "Oracle XE", "JDBC"],
+        "year": 2025,
+        "link": "",
+        "inProgress": false
+      },
+      {
+        "id": "y-p3",
+        "title": "CASS — Énergie des vagues",
+        "description": "Prototype IoT (4e sur 53 au TSYP 2025) : capteurs, ESP32 et ESP32-CAM pour la supervision en temps réel et le contrôle à distance, serveur Python pour le traitement.",
+        "technologies": ["C++", "ESP32", "ESP32-CAM", "Python"],
+        "year": 2025,
+        "link": "https://github.com/louatiyessine/CASS-Iot-Project",
+        "inProgress": false
+      },
+      {
+        "id": "y-p4",
+        "title": "Application de gestion ASP.NET MVC",
+        "description": "Application web MVC avec Entity Framework (Code First) et ADO.NET, intégration d'un template personnalisé et authentification.",
+        "technologies": ["C#", "ASP.NET MVC", "Entity Framework", "ADO.NET"],
+        "year": 2025,
+        "link": "",
+        "inProgress": true
+      },
+      {
+        "id": "y-p5",
+        "title": "ShopEase",
+        "description": "Interface e-commerce responsive réalisée pour apprendre les bases du web : catalogue, panier et commandes.",
+        "technologies": ["HTML", "CSS", "JavaScript"],
+        "year": 2024,
+        "link": "https://github.com/louatiyessine/shopease",
+        "inProgress": false
+      }
+    ]
+  },
+  {
+    "id": "mohamed",
+    "fullName": "Mohamed Chaabouni",
+    "title": "Génie logiciel & intégration de systèmes",
+    "bio": "Étudiant en 3e année de génie logiciel à l'IIT Sfax, en PFE chez OliveSoft : migration de flux d'intégration d'entreprise de Boomi vers n8n. Expérience en développement web full-stack (PHP, ASP.NET MVC), en applications desktop (JavaFX) et en automatisation de workflows. Bénévole IEEE, à l’aise en équipe et en Scrum. Objectif : un cycle ingénieur en architecture logicielle.",
+    "email": "mohamedchaabouni23@gmail.com",
+    "phone": "+216 55 757 503",
+    "city": "Sfax, Tunisie",
+    "githubLogin": "",
+    "linkedinUrl": "",
+    "photoAsset": null,
+    "accentIndex": 1,
+    "education": {
+      "establishment": "North American Private University (NAPU) – IIT Sfax",
+      "program": "Licence en informatique — 3e année",
+      "diploma": "Génie logiciel et systèmes d'information (GLSI)",
+      "period": "2024 – aujourd’hui"
+    },
+    "experiences": [
+      {
+        "role": "Stagiaire ingénieur logiciel (PFE)",
+        "organization": "OliveSoft",
+        "period": "2026",
+        "description": "Migration de flux Boomi vers n8n : workflows SFTP (récupération, transformation, archivage, transfert), mapping des données avec des Code nodes JavaScript et tests de parité fonctionnelle."
+      },
+      {
+        "role": "Officer & Media Manager",
+        "organization": "IEEE Computer Society SBC",
+        "period": "2025 – 2026",
+        "description": "Réseaux sociaux et contenus promotionnels du club ; couverture vidéo, communication et logistique de l'événement CodeCore."
+      },
+      {
+        "role": "CASS Challenge — 4e sur 53 équipes",
+        "organization": "IEEE TSYP 2025",
+        "period": "2025",
+        "description": "Contribution à la couche IoT d'un prototype de récupération d'énergie des vagues : interface matériel–logiciel et monitoring en temps réel."
+      }
+    ],
+    "skills": [
+      {"id": "m-s0", "name": "C", "category": "languages"},
+      {"id": "m-s1", "name": "Python", "category": "languages"},
+      {"id": "m-s2", "name": "Java", "category": "languages"},
+      {"id": "m-s3", "name": "JavaScript", "category": "languages"},
+      {"id": "m-s4", "name": "C#", "category": "languages"},
+      {"id": "m-s5", "name": "HTML", "category": "web"},
+      {"id": "m-s6", "name": "CSS", "category": "web"},
+      {"id": "m-s7", "name": "PHP", "category": "web"},
+      {"id": "m-s8", "name": "ASP.NET MVC", "category": "web"},
+      {"id": "m-s9", "name": "Bootstrap", "category": "web"},
+      {"id": "m-s10", "name": "JavaFX", "category": "mobileDesktop"},
+      {"id": "m-s11", "name": "MySQL", "category": "data"},
+      {"id": "m-s12", "name": "Oracle XE", "category": "data"},
+      {"id": "m-s13", "name": "JDBC", "category": "data"},
+      {"id": "m-s14", "name": "Entity Framework", "category": "data"},
+      {"id": "m-s15", "name": "ADO.NET", "category": "data"},
+      {"id": "m-s16", "name": "n8n", "category": "automation"},
+      {"id": "m-s17", "name": "Boomi", "category": "automation"},
+      {"id": "m-s18", "name": "SFTP", "category": "automation"},
+      {"id": "m-s19", "name": "UML", "category": "tools"},
+      {"id": "m-s20", "name": "Scrum", "category": "tools"},
+      {"id": "m-s21", "name": "Conception de systèmes", "category": "tools"},
+      {"id": "m-s22", "name": "Analyse de données", "category": "tools"},
+      {"id": "m-s23", "name": "Git / GitHub", "category": "tools"},
+      {"id": "m-s24", "name": "Visual Studio", "category": "tools"},
+      {"id": "m-s25", "name": "Canva", "category": "tools"},
+      {"id": "m-s26", "name": "Photoshop", "category": "tools"}
+    ],
+    "projects": [
+      {
+        "id": "m-p0",
+        "title": "Migration Boomi → n8n",
+        "description": "Reconstruction de flux d'intégration d'entreprise en workflows n8n : SFTP, transformation des données en JavaScript, archivage et nettoyage automatiques. Projet de fin d’études chez OliveSoft.",
+        "technologies": ["n8n", "JavaScript", "SFTP", "Boomi"],
+        "year": 2026,
+        "link": "",
+        "inProgress": true
+      },
+      {
+        "id": "m-p1",
+        "title": "UniClubs",
+        "description": "Plateforme web full-stack de gestion des clubs universitaires et de leurs événements : authentification e-mail et Google OAuth, contrôle d’accès par rôles (RBAC).",
+        "technologies": ["PHP 8.2", "MySQL", "Bootstrap 5"],
+        "year": 2026,
+        "link": "",
+        "inProgress": false
+      },
+      {
+        "id": "m-p2",
+        "title": "School Management System",
+        "description": "Application desktop JavaFX en équipe Scrum de quatre (Oracle XE via JDBC). Ma part : inscriptions, dossiers étudiants, administration des niveaux et des classes.",
+        "technologies": ["Java", "JavaFX", "Oracle XE", "JDBC"],
+        "year": 2026,
+        "link": "",
+        "inProgress": false
+      },
+      {
+        "id": "m-p3",
+        "title": "Application web de gestion",
+        "description": "Application web en architecture MVC, accès aux données via Entity Framework / ADO.NET et authentification des utilisateurs.",
+        "technologies": ["C#", "ASP.NET MVC", "Entity Framework", "ADO.NET"],
+        "year": 2026,
+        "link": "",
+        "inProgress": true
+      }
+    ]
+  }
+]

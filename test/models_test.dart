@@ -3,40 +3,24 @@ import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:myportfolio/models/skill.dart';
 import 'package:myportfolio/models/student.dart';
-import 'package:myportfolio/portfolios/all_portfolios.dart';
-import 'package:myportfolio/portfolios/chaabouni_portfolio.dart';
-import 'package:myportfolio/portfolios/portfolio.dart';
-import 'package:myportfolio/portfolios/yessine_portfolio.dart';
-import 'package:myportfolio/providers/portfolio_provider.dart';
+import 'package:myportfolio/services/storage_service.dart';
 
-/// Vérifie l'interface Portfolio et la sérialisation JSON (base de la
-/// persistance).
+/// Vérifie le fichier JSON des données de départ et la sérialisation JSON
+/// (base de la persistance).
 void main() {
-  final students = PortfolioProvider.initialStudents;
+  // Nécessaire pour lire un fichier des assets (rootBundle) dans un test.
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-  test('Les deux étudiants implémentent la même interface Portfolio', () {
-    // Polymorphisme : deux classes différentes, un seul type commun.
-    const Portfolio yessine = YessinePortfolio();
-    const Portfolio chaabouni = ChaabouniPortfolio();
-    expect(allPortfolios, [isA<YessinePortfolio>(), isA<ChaabouniPortfolio>()]);
-
-    // Le même code (toStudent, hérité) sert aux deux.
-    expect(yessine.toStudent().fullName, 'Mouhamed Yessine Louati');
-    expect(chaabouni.toStudent().fullName, 'Mohamed Chaabouni');
+  late List<Student> students;
+  setUpAll(() async {
+    students = await StorageService().loadInitialStudents();
   });
 
-  test('Valeurs par défaut de l’interface : pas de photo ni de GitHub', () {
-    final chaabouni = const ChaabouniPortfolio().toStudent();
-    expect(chaabouni.photoAsset, isNull);
-    expect(chaabouni.githubLogin, isEmpty);
-  });
-
-  test('toStudent convertit la Map des compétences en objets Skill', () {
-    final yessine = const YessinePortfolio().toStudent();
-    final first = yessine.skills.first;
-    expect(first.name, 'C');
-    expect(first.category, SkillCategory.languages);
-    expect(first.id, 'yessine-s0');
+  test('Le fichier JSON contient les données des deux étudiants', () {
+    expect(students.map((s) => s.id), ['yessine', 'mohamed']);
+    expect(students[0].fullName, 'Mouhamed Yessine Louati');
+    expect(students[1].fullName, 'Mohamed Chaabouni');
+    expect(students[0].skills.first.category, SkillCategory.languages);
   });
 
   test('Student : toJson puis fromJson redonne le même portfolio', () {
@@ -73,7 +57,7 @@ void main() {
     expect(mohamed.firstName, 'Mohamed');
   });
 
-  test('Les identifiants des données initiales sont uniques', () {
+  test('Les identifiants des données de départ sont uniques', () {
     for (final student in students) {
       final skillIds = student.skills.map((s) => s.id).toSet();
       final projectIds = student.projects.map((p) => p.id).toSet();
