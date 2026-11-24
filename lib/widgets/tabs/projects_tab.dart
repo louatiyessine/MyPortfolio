@@ -6,8 +6,6 @@ import '../../models/student.dart';
 import '../../providers/portfolio_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../routes/item_form_args.dart';
-import '../app_snackbar.dart';
-import '../confirm_dialog.dart';
 import '../empty_state.dart';
 import '../item_actions_sheet.dart';
 import '../project_card.dart';
@@ -40,6 +38,8 @@ class ProjectsTab extends StatelessWidget {
     return TabScrollView(
       storageKey: 'projects-tab',
       children: [
+        // Chaque Project de la liste devient une ProjectCard (même idée
+        // que `_devices.map(...)` de l'Atelier 7, écrite avec un `for`).
         for (final project in student.projects)
           Padding(
             padding: const EdgeInsets.only(bottom: 14),
@@ -61,39 +61,22 @@ class ProjectsTab extends StatelessWidget {
     );
   }
 
-  Future<void> _showActions(BuildContext context, Project project) async {
-    final action = await showItemActionsSheet(
+  /// Modifier ou supprimer (avec confirmation) : voir [showItemActions].
+  void _showActions(BuildContext context, Project project) {
+    showItemActions(
       context,
       title: project.title,
       subtitle: '${project.year} · ${project.technologies.join(', ')}',
-    );
-    if (!context.mounted) return;
-    switch (action) {
-      case ItemAction.edit:
-        _openForm(context, project);
-      case ItemAction.delete:
-        await _confirmDelete(context, project);
-      case null:
-        break;
-    }
-  }
-
-  Future<void> _confirmDelete(BuildContext context, Project project) async {
-    final confirmed = await showConfirmDialog(
-      context,
-      title: 'Supprimer ce projet ?',
-      message:
+      onEdit: () => _openForm(context, project),
+      confirmTitle: 'Supprimer ce projet ?',
+      confirmMessage:
           '« ${project.title} » sera définitivement retiré du portfolio '
           'de ${student.firstName}.',
+      onDelete: () => context.read<PortfolioProvider>().deleteProject(
+        student.id,
+        project.id,
+      ),
+      deletedMessage: 'Projet « ${project.title} » supprimé',
     );
-    if (!confirmed || !context.mounted) return;
-
-    await context.read<PortfolioProvider>().deleteProject(
-      student.id,
-      project.id,
-    );
-    if (context.mounted) {
-      showAppSnackBar(context, 'Projet « ${project.title} » supprimé');
-    }
   }
 }

@@ -43,7 +43,7 @@ flutter test      # tests unitaires et tests de widgets
 | CRUD (3) | Ajout / modification / suppression des compétences et des projets, modification du profil, validation, confirmation, SnackBar | `screens/*_form_screen.dart`, `providers/portfolio_provider.dart` |
 | Persistance (2) | Tout est sauvegardé en JSON dans `shared_preferences` et rechargé au démarrage | `services/storage_service.dart` |
 | API REST (2) | Dépôts GitHub en direct : chargement, erreur + Réessayer, données | `services/github_api_service.dart`, `screens/github_repos_screen.dart` |
-| Qualité du code (2) | Un fichier = une responsabilité, widgets réutilisables, commentaires, tests, 0 warning | tout `lib/`, `test/` |
+| Qualité du code (2) | Interface `Portfolio` (aucun code répété entre les deux étudiants), un fichier = une responsabilité, widgets réutilisables, tests, 0 warning | `portfolios/`, tout `lib/`, `test/` |
 
 ## 3. Scénario de démonstration (5 minutes)
 
@@ -55,7 +55,7 @@ flutter test      # tests unitaires et tests de widgets
 6. **Profil** : bouton « Modifier le profil » → choisir une autre couleur → tout le formulaire change de couleur en direct.
 7. **Persistance** : fermer complètement l'application puis la relancer : les modifications sont toujours là.
 8. **Indépendance** : ouvrir l'autre portfolio : il n'a pas été touché.
-9. **API REST** : icône terminal (en haut à droite) → dépôts GitHub chargés en direct. Activer le **mode avion** puis « Actualiser » → message d'erreur clair → désactiver le mode avion → « Réessayer ».
+9. **API REST** : onglet Profil → carte « Mes dépôts GitHub » (ou icône terminal en haut à droite) → dépôts GitHub chargés en direct. Activer le **mode avion** puis « Actualiser » → message d'erreur clair → désactiver le mode avion → « Réessayer ».
 10. **Démo propre** : le menu « ⋮ » de l'accueil remet les données des CV (Réinitialiser).
 
 ## 4. Architecture
@@ -63,7 +63,7 @@ flutter test      # tests unitaires et tests de widgets
 ```text
 lib/
   main.dart                 Point d'entrée : Provider au-dessus de MaterialApp
-  data/seed_data.dart       Données initiales tirées des CV (premier lancement)
+  portfolios/               L'INTERFACE Portfolio + une classe par étudiant (données des CV)
   models/                   Student, Education, Experience, Skill, Project, GithubRepo
   services/                 StorageService (persistance), GithubApiService (HTTP)
   providers/                PortfolioProvider : état + CRUD + notifyListeners()
@@ -74,6 +74,35 @@ lib/
   utils/                    Validators, ouverture de liens, dates relatives
 test/                       Tests des modèles, du provider, des validators, de l'API et du CRUD
 ```
+
+### L'interface `Portfolio` : zéro code répété entre les deux étudiants
+
+```text
+abstract class Portfolio            (portfolios/portfolio.dart)
+  ├─ getters abstraits : id, fullName, bio, education, skills, projects...  -> CE QUE chaque étudiant fournit
+  └─ toStudent()       : code commun, écrit UNE fois                         -> hérité par tous
+        ▲                          ▲
+YessinePortfolio            ChaabouniPortfolio          (uniquement des données, aucun code d'affichage)
+
+allPortfolios = [YessinePortfolio(), ChaabouniPortfolio()]     (portfolios/all_portfolios.dart)
+        │  toStudent()
+        ▼
+PortfolioProvider -> PortfolioScreen, onglets, formulaires : UN seul code pour les deux étudiants
+```
+
+Ajouter un 3e étudiant = écrire une classe `extends Portfolio` et l'ajouter à `allPortfolios`. Aucun écran à modifier.
+
+### Où est l'API REST ?
+
+| Étape | Fichier |
+|---|---|
+| Requête `GET https://api.github.com/users/<login>/repos` + `jsonDecode` + erreurs | `services/github_api_service.dart` |
+| Conversion JSON -> objet (`fromJson`) | `models/github_repo.dart` |
+| `Future` créé dans `initState` + `FutureBuilder` (waiting / error / succès) | `screens/github_repos_screen.dart` |
+| Accès dans l'app : carte « Mes dépôts GitHub » de l'onglet Profil | `widgets/github_cta_card.dart` |
+
+C'est le même principe que `WeatherService` de l'Atelier 7, avec l'API GitHub à la place d'Open-Meteo.
+L'identifiant GitHub se modifie dans « Modifier le profil ».
 
 **Rôles :** un *Model* décrit les données ; un *Service* les lit/écrit (stockage, API) ;
 le *Provider* garde l'état et prévient l'interface ; un *Screen* est une page ; un *Widget* est un morceau d'interface réutilisable.
@@ -91,7 +120,7 @@ Formulaire         ->  SnackBar + Navigator.pop()           (retour au portfolio
 ```
 
 Au redémarrage : `PortfolioProvider.load()` → `StorageService.loadStudents()` → `jsonDecode` + `fromJson`.
-Si le stockage est vide (premier lancement), les données des CV sont enregistrées.
+Si le stockage est vide (premier lancement), les données des CV (`allPortfolios` → `toStudent()`) sont enregistrées.
 
 ## 5. Choix techniques
 
@@ -126,7 +155,9 @@ Contrastes vérifiés (WCAG AA) : le texte le plus discret (`#8C95AB`) atteint 6
 
 - **StatelessWidget ou StatefulWidget ?** `PortfolioScreen` est Stateful (onglet actif, `TabController`) ; `ProjectCard` est Stateless (affiche ce qu'on lui donne).
 - **Pourquoi `context.watch` et `context.read` ?** `watch` dans `build` pour se reconstruire quand les données changent ; `read` dans les actions (boutons) pour appeler une méthode sans s'abonner.
-- **Pourquoi le `Future` de l'API n'est pas créé dans `build` ?** Sinon chaque reconstruction relancerait la requête. Il est créé dans `didChangeDependencies` et recréé par « Réessayer ».
+- **Comment évitez-vous de répéter le code pour les deux portfolios ?** Avec l'interface `Portfolio` (classe abstraite) : elle impose les mêmes informations à chaque étudiant et contient le code commun (`toStudent`). `YessinePortfolio` et `ChaabouniPortfolio` ne contiennent que des données. Tous les écrans reçoivent un `Student` et ne savent pas de quel étudiant il s'agit.
+- **Interface ou classe abstraite ?** En Dart, toute classe peut servir d'interface. On utilise `abstract class` car elle déclare le contrat (getters sans corps) ET partage du code (`toStudent`), ce qu'une interface pure ne fait pas.
+- **Pourquoi le `Future` de l'API n'est pas créé dans `build` ?** Sinon chaque reconstruction relancerait la requête (comme dans l'Atelier 7). Il est créé dans `initState` et recréé par « Réessayer ».
 - **Pourquoi `setState(() { ... })` avec des accolades dans `_reload` ?** Avec `=>`, la fonction renverrait le `Future` affecté, ce que Flutter interdit.
 - **Comment les deux portfolios restent indépendants ?** Chaque `Student` possède ses listes ; chaque méthode CRUD reçoit un `studentId` et ne modifie que cet étudiant.
 - **À quoi sert `copyWith` ?** Créer une copie modifiée d'un objet immuable au lieu de le modifier directement.

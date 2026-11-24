@@ -2,23 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../models/github_repo.dart';
+import '../models/student.dart';
 import '../providers/portfolio_provider.dart';
 import '../routes/app_routes.dart';
 import '../services/github_api_service.dart';
 import '../theme/accent_theme.dart';
+import '../theme/app_colors.dart';
 import '../widgets/empty_state.dart';
-import '../widgets/error_view.dart';
 import '../widgets/github_summary.dart';
-import '../widgets/loading_view.dart';
 import '../widgets/repo_card.dart';
 import '../widgets/student_not_found.dart';
 
-/// Dépôts GitHub d'un étudiant, récupérés en direct via l'API REST.
+/// Dépôts GitHub d'un étudiant, récupérés en direct via l'API REST
+/// (même principe que la météo de l'Atelier 7).
 ///
-/// Le [FutureBuilder] gère les trois états demandés :
-///   1. chargement -> indicateur circulaire,
-///   2. erreur     -> message clair + bouton « Réessayer »,
-///   3. données    -> résumé + liste des dépôts.
+/// Le [FutureBuilder] gère les trois états :
+///   1. waiting -> CircularProgressIndicator,
+///   2. error   -> message clair + bouton « Réessayer »,
+///   3. succès  -> résumé + liste des dépôts.
 class GithubReposScreen extends StatefulWidget {
   const GithubReposScreen({super.key, required this.studentId, this.api});
 
@@ -34,36 +35,45 @@ class GithubReposScreen extends StatefulWidget {
 class _GithubReposScreenState extends State<GithubReposScreen> {
   late final GithubApiService _api = widget.api ?? GithubApiService();
 
-  /// La requête en cours. Elle est créée UNE fois (pas dans build), sinon
-  /// chaque reconstruction de l'écran relancerait un appel réseau.
+  /// La requête en cours, ou `null` si l'étudiant n'a pas d'identifiant.
   Future<List<GithubRepo>>? _reposFuture;
 
-  /// Login utilisé pour la dernière requête.
-  String? _login;
-
+  /// Pourquoi initState() ? Si on lançait la requête dans build(), elle
+  /// serait relancée à chaque reconstruction de l'écran.
   @override
-  void didChangeDependencies() {
-    super.didChangeDependencies();
-    // Appelé à l'ouverture ET quand le provider change : si l'identifiant
-    // GitHub a été modifié dans le profil, on relance la requête.
-    final student = Provider.of<PortfolioProvider>(
-      context,
-    ).studentById(widget.studentId);
-    final login = student?.githubLogin ?? '';
-    if (login != _login) {
-      _login = login;
-      _reposFuture = login.isEmpty ? null : _api.fetchRepos(login);
-    }
+  void initState() {
+    super.initState();
+    _reposFuture = _fetchRepos();
   }
 
-  /// Bouton « Réessayer » et tirer pour rafraîchir : nouvelle requête.
-  ///
+  /// Envoie la requête GET avec l'identifiant GitHub ACTUEL de l'étudiant.
+  Future<List<GithubRepo>>? _fetchRepos() {
+    final login =
+        context
+            .read<PortfolioProvider>()
+            .studentById(widget.studentId)
+            ?.githubLogin ??
+        '';
+    return login.isEmpty ? null : _api.fetchRepos(login);
+  }
+
+  /// « Réessayer » et « Actualiser » : nouvelle requête.
   /// Accolades obligatoires : avec `=>`, la fonction donnée à setState
   /// renverrait le Future affecté, ce que Flutter interdit.
   void _reload() {
     setState(() {
-      _reposFuture = _api.fetchRepos(_login!);
+      _reposFuture = _fetchRepos();
     });
+  }
+
+  /// Ouvre le profil pour saisir l'identifiant, puis recharge au retour.
+  Future<void> _openProfileForm() async {
+    await Navigator.pushNamed(
+      context,
+      AppRoutes.profileForm,
+      arguments: widget.studentId,
+    );
+    if (mounted) _reload();
   }
 
   @override
@@ -95,15 +105,11 @@ class _GithubReposScreenState extends State<GithubReposScreen> {
                     'Ajoute ton identifiant dans le profil pour afficher tes '
                     'dépôts publics.',
                 actionLabel: 'Modifier le profil',
-                onAction: () => Navigator.pushNamed(
-                  context,
-                  AppRoutes.profileForm,
-                  arguments: student.id,
-                ),
+                onAction: _openProfileForm,
               )
             : FutureBuilder<List<GithubRepo>>(
                 future: _reposFuture,
-                builder: _buildState,
+                builder: (context, snapshot) => _buildState(snapshot, student),
               ),
       ),
     );
@@ -111,26 +117,30 @@ class _GithubReposScreenState extends State<GithubReposScreen> {
 
   /// Choisit l'affichage selon l'état de la requête.
   Widget _buildState(
-    BuildContext context,
     AsyncSnapshot<List<GithubRepo>> snapshot,
+    Student student,
   ) {
     // 1. Chargement
-    if (snapshot.connectionState != ConnectionState.done) {
-      return const LoadingView(message: 'Connexion à GitHub…');
+    if (snapshot.connectionState == ConnectionState.waiting) {
+      return const Center(child: CircularProgressIndicator());
     }
 
-    // 2. Erreur
+    // 2. Erreur (pas de réseau, compte inconnu, code HTTP != 200...)
     if (snapshot.hasError) {
       final error = snapshot.error;
-      return ErrorView(
+      return EmptyState(
+        icon: Icons.cloud_off_rounded,
+        color: AppColors.danger,
+        title: 'Impossible de charger les dépôts',
         message: error is GithubApiException
             ? error.message
             : 'Une erreur inattendue est survenue.',
-        onRetry: _reload,
+        actionLabel: 'Réessayer',
+        onAction: _reload,
       );
     }
 
-    // 3. Données
+    // 3. Succès
     final repos = snapshot.data ?? [];
     if (repos.isEmpty) {
       return const EmptyState(
@@ -140,22 +150,15 @@ class _GithubReposScreenState extends State<GithubReposScreen> {
       );
     }
 
-    return RefreshIndicator(
-      onRefresh: () async {
-        _reload();
-        try {
-          await _reposFuture;
-        } catch (_) {
-          // L'erreur est déjà affichée par le FutureBuilder.
-        }
-      },
-      child: ListView.separated(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
-        itemCount: repos.length + 1,
-        separatorBuilder: (_, _) => const SizedBox(height: 12),
-        // L'élément 0 est le résumé, les suivants sont les dépôts.
-        itemBuilder: (context, index) => index == 0
-            ? GithubSummary(login: _login!, repos: repos)
+    // ListView.builder : crée les cartes à partir de la liste.
+    // L'élément 0 est le résumé, les suivants sont les dépôts.
+    return ListView.builder(
+      padding: const EdgeInsets.fromLTRB(20, 8, 20, 32),
+      itemCount: repos.length + 1,
+      itemBuilder: (context, index) => Padding(
+        padding: const EdgeInsets.only(bottom: 12),
+        child: index == 0
+            ? GithubSummary(login: student.githubLogin, repos: repos)
             : RepoCard(repo: repos[index - 1]),
       ),
     );

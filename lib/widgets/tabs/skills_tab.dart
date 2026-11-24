@@ -7,8 +7,6 @@ import '../../providers/portfolio_provider.dart';
 import '../../routes/app_routes.dart';
 import '../../routes/item_form_args.dart';
 import '../../theme/category_icons.dart';
-import '../app_snackbar.dart';
-import '../confirm_dialog.dart';
 import '../empty_state.dart';
 import '../item_actions_sheet.dart';
 import '../section_title.dart';
@@ -94,36 +92,20 @@ class SkillsTab extends StatelessWidget {
     );
   }
 
-  Future<void> _showActions(BuildContext context, Skill skill) async {
-    final action = await showItemActionsSheet(
+  /// Modifier ou supprimer (avec confirmation) : voir [showItemActions].
+  void _showActions(BuildContext context, Skill skill) {
+    showItemActions(
       context,
       title: skill.name,
       subtitle: skill.category.label,
-    );
-    if (!context.mounted) return;
-    switch (action) {
-      case ItemAction.edit:
-        _openForm(context, skill);
-      case ItemAction.delete:
-        await _confirmDelete(context, skill);
-      case null:
-        break; // Panneau fermé sans choix.
-    }
-  }
-
-  Future<void> _confirmDelete(BuildContext context, Skill skill) async {
-    final confirmed = await showConfirmDialog(
-      context,
-      title: 'Supprimer cette compétence ?',
-      message:
+      onEdit: () => _openForm(context, skill),
+      confirmTitle: 'Supprimer cette compétence ?',
+      confirmMessage:
           '« ${skill.name} » sera retirée du portfolio de '
           '${student.firstName}.',
+      onDelete: () =>
+          context.read<PortfolioProvider>().deleteSkill(student.id, skill.id),
+      deletedMessage: 'Compétence « ${skill.name} » supprimée',
     );
-    if (!confirmed || !context.mounted) return;
-
-    await context.read<PortfolioProvider>().deleteSkill(student.id, skill.id);
-    if (context.mounted) {
-      showAppSnackBar(context, 'Compétence « ${skill.name} » supprimée');
-    }
   }
 }

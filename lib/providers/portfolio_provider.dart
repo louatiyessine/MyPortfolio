@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 
-import '../data/seed_data.dart';
 import '../models/project.dart';
 import '../models/skill.dart';
 import '../models/student.dart';
+import '../portfolios/all_portfolios.dart';
 import '../services/storage_service.dart';
 
 /// Cerveau de l'application : contient les deux portfolios en mémoire.
@@ -42,12 +42,19 @@ class PortfolioProvider extends ChangeNotifier {
   // Chargement
   // -------------------------------------------------------------------------
 
+  /// Les portfolios de départ (données des CV). Chaque classe qui
+  /// implémente l'interface `Portfolio` est convertie en [Student] avec le
+  /// MÊME code (`toStudent`), quel que soit l'étudiant.
+  static List<Student> get initialStudents => [
+    for (final portfolio in allPortfolios) portfolio.toStudent(),
+  ];
+
   /// Charge les données au démarrage. Au premier lancement (stockage vide),
   /// on enregistre les données initiales issues des CV.
   Future<void> load() async {
     final saved = await _storage.loadStudents();
     if (saved == null || saved.isEmpty) {
-      _students = SeedData.students;
+      _students = initialStudents;
       await _storage.saveStudents(_students);
     } else {
       _students = saved;
@@ -58,7 +65,7 @@ class PortfolioProvider extends ChangeNotifier {
 
   /// Remet les deux portfolios dans leur état initial (utile en démo).
   Future<void> resetToDefaults() async {
-    _students = SeedData.students;
+    _students = initialStudents;
     await _storage.saveStudents(_students);
     notifyListeners();
   }

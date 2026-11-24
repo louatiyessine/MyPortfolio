@@ -1,15 +1,46 @@
 import 'dart:convert';
 
 import 'package:flutter_test/flutter_test.dart';
-import 'package:myportfolio/data/seed_data.dart';
 import 'package:myportfolio/models/skill.dart';
 import 'package:myportfolio/models/student.dart';
+import 'package:myportfolio/portfolios/all_portfolios.dart';
+import 'package:myportfolio/portfolios/chaabouni_portfolio.dart';
+import 'package:myportfolio/portfolios/portfolio.dart';
+import 'package:myportfolio/portfolios/yessine_portfolio.dart';
+import 'package:myportfolio/providers/portfolio_provider.dart';
 
-/// Vérifie que la sérialisation JSON ne perd aucune information :
-/// c'est la base de la persistance.
+/// Vérifie l'interface Portfolio et la sérialisation JSON (base de la
+/// persistance).
 void main() {
+  final students = PortfolioProvider.initialStudents;
+
+  test('Les deux étudiants implémentent la même interface Portfolio', () {
+    // Polymorphisme : deux classes différentes, un seul type commun.
+    const Portfolio yessine = YessinePortfolio();
+    const Portfolio chaabouni = ChaabouniPortfolio();
+    expect(allPortfolios, [isA<YessinePortfolio>(), isA<ChaabouniPortfolio>()]);
+
+    // Le même code (toStudent, hérité) sert aux deux.
+    expect(yessine.toStudent().fullName, 'Mouhamed Yessine Louati');
+    expect(chaabouni.toStudent().fullName, 'Mohamed Chaabouni');
+  });
+
+  test('Valeurs par défaut de l’interface : pas de photo ni de GitHub', () {
+    final chaabouni = const ChaabouniPortfolio().toStudent();
+    expect(chaabouni.photoAsset, isNull);
+    expect(chaabouni.githubLogin, isEmpty);
+  });
+
+  test('toStudent convertit la Map des compétences en objets Skill', () {
+    final yessine = const YessinePortfolio().toStudent();
+    final first = yessine.skills.first;
+    expect(first.name, 'C');
+    expect(first.category, SkillCategory.languages);
+    expect(first.id, 'yessine-s0');
+  });
+
   test('Student : toJson puis fromJson redonne le même portfolio', () {
-    final original = SeedData.students.first;
+    final original = students.first;
 
     // On passe par une vraie chaîne JSON, comme dans shared_preferences.
     final text = jsonEncode(original.toJson());
@@ -34,8 +65,8 @@ void main() {
   });
 
   test('Initiales et prénom calculés à partir du nom complet', () {
-    final yessine = SeedData.students[0];
-    final mohamed = SeedData.students[1];
+    final yessine = students[0];
+    final mohamed = students[1];
     expect(yessine.initials, 'YL');
     expect(yessine.firstName, 'Yessine');
     expect(mohamed.initials, 'MC');
@@ -43,7 +74,7 @@ void main() {
   });
 
   test('Les identifiants des données initiales sont uniques', () {
-    for (final student in SeedData.students) {
+    for (final student in students) {
       final skillIds = student.skills.map((s) => s.id).toSet();
       final projectIds = student.projects.map((p) => p.id).toSet();
       expect(skillIds.length, student.skills.length);

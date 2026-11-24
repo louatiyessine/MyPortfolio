@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
-/// Message affiché quand une liste est vide, avec une action optionnelle.
-/// Un écran vide doit toujours expliquer quoi faire ensuite.
+/// Message centré : icône ronde, titre, explication et bouton facultatif.
+///
+/// Un seul widget pour tous les cas « rien à afficher » : liste vide,
+/// étudiant introuvable, et aussi erreur de l'API (avec [color] rouge et un
+/// bouton « Réessayer »). Pas de code répété.
 class EmptyState extends StatelessWidget {
   const EmptyState({
     super.key,
@@ -10,6 +13,7 @@ class EmptyState extends StatelessWidget {
     required this.message,
     this.actionLabel,
     this.onAction,
+    this.color,
   });
 
   final IconData icon;
@@ -18,10 +22,13 @@ class EmptyState extends StatelessWidget {
   final String? actionLabel;
   final VoidCallback? onAction;
 
+  /// Couleur de l'icône. Par défaut : la couleur de l'étudiant.
+  final Color? color;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final accent = theme.colorScheme.primary;
+    final iconColor = color ?? theme.colorScheme.primary;
 
     return Center(
       child: SingleChildScrollView(
@@ -29,14 +36,10 @@ class EmptyState extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Container(
-              width: 84,
-              height: 84,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: accent.withValues(alpha: 0.12),
-              ),
-              child: Icon(icon, size: 38, color: accent),
+            CircleAvatar(
+              radius: 42,
+              backgroundColor: iconColor.withValues(alpha: 0.12),
+              child: Icon(icon, size: 38, color: iconColor),
             ),
             const SizedBox(height: 20),
             Text(

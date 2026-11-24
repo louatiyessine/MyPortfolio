@@ -24,7 +24,10 @@ class ProfileTab extends StatelessWidget {
       storageKey: 'profile-tab',
       children: [
         StatsStrip(student: student),
-        const SizedBox(height: 28),
+        const SizedBox(height: 20),
+        // En haut de l'onglet : l'accès à l'API REST se voit tout de suite.
+        GithubCtaCard(student: student),
+        const SizedBox(height: 32),
         const SectionTitle('À propos', icon: Icons.person_outline_rounded),
         const SizedBox(height: 12),
         Text(student.bio, style: textTheme.bodyLarge),
@@ -46,8 +49,6 @@ class ProfileTab extends StatelessWidget {
               isLast: i == experiences.length - 1,
             ),
         ],
-        const SizedBox(height: 32),
-        GithubCtaCard(student: student),
       ],
     );
   }
